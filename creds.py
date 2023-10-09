@@ -1,0 +1,5 @@
+
+token = "t1.9euelZqSm52bl4yWmcvLy4yOzpbNjO3rnpWazJeSz8qZip2UkI2MkZjKyZvl9PdhS29W-e9xWC6v3fT3IXpsVvnvcVgur83n9euelZrJkI6dj5DLmsiXmZbLnZXPje_8xeuelZrJkI6dj5DLmsiXmZbLnZXPjQ.bxO8SrcChQlRtCLYh31n6mC1kmsoNT9UtJtom-zTcaqqtra3NKFZqrU-pITM_yRmFzZZG6jsO1YAAmHZVhOgCg"
+cloud_id = "b1gtqcdar7st9r9i6hhd"
+folder_id = "b1gluhl8h1ulmb8852j6"
+compute_default_zone = "ru-central1-a"
