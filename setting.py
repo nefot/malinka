@@ -10,5 +10,8 @@ datas = {
     'emotion': 'evil',
     'speed': '1.1',
     'format': 'lpcm',
-    'sampleRateHertz': 16000,
+    'sampleRateHertz': sample_rate,
 }
+
+port = "8888"
+host = "127.0.0.1"
