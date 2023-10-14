@@ -1,16 +1,12 @@
 import requests
 
-from speak_recognize import listen_command
-from speak_synthesis import TextToSpeak
+import helper
+from speach_synthesis import pyaudio_play_audio_function
 from setting import port, host
 
 
-def dubbing():
-    pass
-
-
-def listening():
-    pass
+def listen_command(text):
+    return text
 
 
 def get_text():
@@ -24,10 +20,5 @@ def get_text():
 
 
 if __name__ == '__main__':
-    a = TextToSpeak()
     while True:
-        print(listen_command())
-
-    #
-
-        a.pyaudio_play_audio_function(listen_command())
+        pyaudio_play_audio_function(listen_command())
