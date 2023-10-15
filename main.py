@@ -1,12 +1,22 @@
 import requests
 
 import helper
+import setting
+from recognition import Recognition
 from speach_synthesis import pyaudio_play_audio_function
 from setting import port, host
 
 
 def listen_command(text):
     return text
+
+
+def send_text(text):
+    return ''
+
+
+def sensor_active():
+    return True
 
 
 def get_text():
@@ -21,4 +31,11 @@ def get_text():
 
 if __name__ == '__main__':
     while True:
-        pyaudio_play_audio_function(listen_command())
+        while sensor_active():
+            test = Recognition(setting.API)
+            text = test.run()[0]
+            send_text(text)
+            # new_text = get_text()
+            # pyaudio_play_audio_function(" . " + " .... " + new_text)
+
+            pyaudio_play_audio_function(" . " + " .... " + text)
