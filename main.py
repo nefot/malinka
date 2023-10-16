@@ -4,7 +4,7 @@ import helper
 import setting
 from recognition import Recognition
 from speach_synthesis import pyaudio_play_audio_function
-from setting import port, host
+from setting import PORT, HOST
 
 
 def listen_command(text):
@@ -25,7 +25,7 @@ def get_text():
     :param text: json файл
     :return: текст
     """
-    res = requests.get(f"http://{host}:{port}/donetext")
+    res = requests.get(f"http://{HOST}:{PORT}/donetext")
     return res,
 
 

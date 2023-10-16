@@ -4,12 +4,8 @@
 2. Создать Интерфейс командной строки Yandex Cloud. В операционной системе
 3. Назначить роль сервисному аккаунту 
 4. Задать API-ключ сервисного аккаунта в виде переменной окружения
-5. Выполнить созданный файл `python .\speach_recognition.py --secret AQVNyUzOGjKeZLACdq8b96ibAT1WnAUPcRpx5jbX`
+5. Выполнить созданный файл
 ## 1. Создание API-ключа
-
-python output/test.py --token ${IAM_TOKEN} --output speech.wav -text Привет, я работаю хорошо
-
---no-dependencies
 
 1. [В консоли управления]("https://console.cloud.yandex.ru/folders")
 перейдите в каталог, которому принадлежит сервисный аккаунт.

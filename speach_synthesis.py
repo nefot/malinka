@@ -9,9 +9,9 @@ from speechkit import Session, SpeechSynthesis
 
 
 def pyaudio_play_audio_function(text,
-                                num_channels=setting.num_channels,
-                                sample_rate=setting.sample_rate,
-                                chunk_size=setting.chunk_size) -> str | None:
+                                num_channels=setting.NUM_CHANNELS,
+                                sample_rate=setting.SAMPLE_RATE,
+                                chunk_size=setting.CHUNK_SIZE) -> str | None:
     """
     Воспроизводит бинарный объект с аудио данными в формате lpcm (WAV)
     :param text: Текст, который подается для озвучивания
@@ -23,18 +23,18 @@ def pyaudio_play_audio_function(text,
         можно отрегулировать если появится потрескивание
     """
     try:
-        session = Session.from_yandex_passport_oauth_token(setting.oauth_token, setting.catalog_id)
+        session = Session.from_yandex_passport_oauth_token(setting.OAUTH_TOKEN, setting.CATALOG_ID)
         synthesize_audio = SpeechSynthesis(session)
     except requests.exceptions.ConnectionError:
         helper.debug("Подключение нестабильно")
         return ''
 
-    if text in setting.invalid_elements:
+    if text in setting.INVALID_ELEMENTS:
         return
     # try:
     print(text, "text")
 
-    audio_data = synthesize_audio.synthesize_stream(**setting.datas, text=text)
+    audio_data = synthesize_audio.synthesize_stream(**setting.SPEAK_SETTING, text=text)
 
     # except speechkit.exceptions.RequestError:
 
