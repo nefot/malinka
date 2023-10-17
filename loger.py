@@ -1,6 +1,7 @@
 import logging
 import os
 
+
 def setup_logging():
     # Создаем директорию "log" (если не существует)
     log_directory = 'log'

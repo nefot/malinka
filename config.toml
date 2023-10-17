@@ -13,7 +13,7 @@ CHUNK_SIZE = 400
 NUM_CHANNELS = 1
 
 [VOICE_SETTING]
-INVALID_ELEMENTS = [ " ", "",]
+INVALID_ELEMENTS = [" ", "", ]
 VOICE = "ermil"
 EMOTION = "good"
 SPEED = "1.1"

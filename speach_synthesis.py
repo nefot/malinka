@@ -1,62 +1,95 @@
-import requests.exceptions
-import helper
-import setting
-import pyaudio
 import librosa
+import requests.exceptions
+import pyaudio
 from speechkit import Session, SpeechSynthesis
+from loger import setup_logging
+import numpy as np
+import matplotlib.pyplot as plt
+
+logger = setup_logging()
+from setting import (
+    OAUTH_TOKEN, CATALOG_ID,
+    NUM_CHANNELS, SAMPLE_RATE, CHUNK_SIZE,
+    INVALID_ELEMENTS, SPEAK_SETTING, CHUNK
+)
 
 
+class SoundProcessor:
+    def __init__(self):
+        self.logger = setup_logging()
+        self.authenticate()
+
+    def authenticate(self):
+        try:
+            self.logger.debug("Аутентификация")
+            session = Session.from_yandex_passport_oauth_token(OAUTH_TOKEN, CATALOG_ID)
+            self.synthesize_audio = SpeechSynthesis(session)
+        except requests.exceptions.ConnectionError:
+            self.logger.debug("Нестабильное подключение")
+            return False
+        return True
+
+    def process_and_play_audio(self, text):
+        if text in INVALID_ELEMENTS:
+            return
+
+        audio_data = self.synthesize_audio.synthesize_stream(**SPEAK_SETTING, text=text)
+
+        self.logger.debug(f"Озвучил: {text}")
+
+        p = pyaudio.PyAudio()
+        stream = p.open(
+            format=pyaudio.paInt16,
+            channels=NUM_CHANNELS,
+            rate=SAMPLE_RATE,
+            output=True,
+            frames_per_buffer=CHUNK_SIZE
+        )
+
+        try:
+            for i in range(0, len(audio_data), CHUNK_SIZE):
+                stream.write(audio_data[i:i + CHUNK_SIZE])
+
+        finally:
+            stream.stop_stream()
+            stream.close()
+            p.terminate()
+        return audio_data
+
+    def visualize_audio(self, audio_signal):
+        plt.plot(np.arange(0, len(audio_signal)), audio_signal)
+        plt.xlabel('Time')
+        plt.ylabel('Amplitude')
+        plt.title('Audio Signal')
+        plt.show()
+
+    def harmonic_analysis_resynthesis(self, audio_data, num_harmonics=10):
+        """
+        Гармонический анализ и ресинтез аудио.
+        """
+        # Производим гармонический анализ: вычисляем амплитуду и фазу для каждой гармоники
+        spectrum = np.fft.fft(audio_data)
+        amplitudes = np.abs(spectrum)[:num_harmonics]
+        phases = np.angle(spectrum)[:num_harmonics]
+        resynthesized_spectrum = np.zeros_like(spectrum)
+        for i in range(num_harmonics):
+            resynthesized_spectrum[i] = amplitudes[i] * np.exp(1j * phases[i])
+        resynthesized_audio = np.fft.ifft(resynthesized_spectrum)
+
+        return np.real(resynthesized_audio)
 
 
-def pyaudio_play_audio_function(text,
-                                num_channels=setting.NUM_CHANNELS,
-                                sample_rate=setting.SAMPLE_RATE,
-                                chunk_size=setting.CHUNK_SIZE) -> str | None:
-    """
-    Воспроизводит бинарный объект с аудио данными в формате lpcm (WAV)
-    :param text: Текст, который подается для озвучивания
-    :param integer num_channels: количество каналов, спич кит генерирует
-        моно дорожку, поэтому стоит оставить значение `1`
-    :param integer sample_rate: частота дискретизации, такая же
-        какую вы указали в параметре sampleRateHertz
-    :param integer chunk_size: размер семпла воспроизведения,
-        можно отрегулировать если появится потрескивание
-    """
-
-    try:
-        session = Session.from_yandex_passport_oauth_token(setting.OAUTH_TOKEN, setting.CATALOG_ID)
-        synthesize_audio = SpeechSynthesis(session)
-    except requests.exceptions.ConnectionError:
-        helper.debug("Подключение нестабильно")
-        return ''
-
-    if text in setting.INVALID_ELEMENTS:
-        return
-    # try:
-    print(text, "text")
-
-    audio_data = synthesize_audio.synthesize_stream(**setting.SPEAK_SETTING, text=text)
-
-    # except speechkit.exceptions.RequestError:
-
-    p = pyaudio.PyAudio()
-
-    stream = p.open(
-        format=pyaudio.paInt16,
-        channels=num_channels,
-        rate=sample_rate,
-        output=True,
-        frames_per_buffer=chunk_size
-    )
-
-    try:
-        for i in range(0, len(audio_data), chunk_size):
-            stream.write(audio_data[i:i + chunk_size])
-    finally:
-        stream.stop_stream()
-        stream.close()
-        p.terminate()
-
-
-if __name__ == '__main__':
-    pyaudio_play_audio_function('sil<[300]> **Удобные** интерфейсы для решения задач.')
+# Пример использования
+if __name__ == "__main__":
+    sound_processor = SoundProcessor()
+    if sound_processor.authenticate():
+        text = "возвращает массив numpy с преобразованными данными. "
+        audio = sound_processor.process_and_play_audio(text)
+        audio = np.frombuffer(audio, dtype=np.int16)
+        shifted_audio_data = sound_processor.harmonic_analysis_resynthesis(audio, 55)
+        print(type(audio))
+        # Создаем пример аудио сигнала для визуализации (заглушка)
+        audio_signal = np.sin(2 * np.pi * np.linspace(0, 1, SAMPLE_RATE))
+        print(type(audio_signal))
+        sound_processor.visualize_audio(audio)
+        sound_processor.visualize_audio(shifted_audio_data)

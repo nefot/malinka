@@ -4,11 +4,13 @@ import pyaudio
 import grpc
 import yandex.cloud.ai.stt.v3.stt_pb2 as stt_pb2
 import yandex.cloud.ai.stt.v3.stt_service_pb2_grpc as stt_service_pb2_grpc
-from speach_synthesis import pyaudio_play_audio_function
+
 
 from loger import setup_logging
 
 logger = setup_logging()
+
+
 class Recognition:
     @classmethod
     def validate(cls, api):
@@ -32,7 +34,6 @@ class Recognition:
                         audio_channel_count=1
                     )
                 ),
-
                 text_normalization=stt_pb2.TextNormalizationOptions(
                     text_normalization=stt_pb2.TextNormalizationOptions.TEXT_NORMALIZATION_ENABLED,
                     profanity_filter=True,
@@ -86,17 +87,14 @@ class Recognition:
                 event_type, alternatives = r.WhichOneof('Event'), None
                 if event_type == 'partial' and len(r.partial.alternatives) > 0:
                     alternatives = [a.text for a in r.partial.alternatives]
-                    # return alternatives
                 if event_type == 'final':
                     alternatives = [a.text for a in r.final.alternatives]
                     return alternatives
                 if event_type == 'final_refinement':
                     alternatives = [a.text for a in r.final_refinement.normalized_text.alternatives]
 
-                # print(f'type={event_type}, alternatives={alternatives}')
 
         except grpc._channel._Rendezvous as err:
-            # print(f'Error code {err._state.code}, message: {err._state.details}')
             logger.error(err)
             raise err
 
