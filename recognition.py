@@ -6,7 +6,9 @@ import yandex.cloud.ai.stt.v3.stt_pb2 as stt_pb2
 import yandex.cloud.ai.stt.v3.stt_service_pb2_grpc as stt_service_pb2_grpc
 from speach_synthesis import pyaudio_play_audio_function
 
+from loger import setup_logging
 
+logger = setup_logging()
 class Recognition:
     @classmethod
     def validate(cls, api):
@@ -55,7 +57,7 @@ class Recognition:
 
     @staticmethod
     def connection_server():
-
+        logger.debug('connection_server')
         cred = grpc.ssl_channel_credentials()
         channel = grpc.secure_channel('stt.api.cloud.yandex.net:443', cred)
         stub = stt_service_pb2_grpc.RecognizerStub(channel)
@@ -66,7 +68,7 @@ class Recognition:
         stream = self.audio.open(format=FORMAT, channels=CHANNELS,
                                  rate=RATE, input=True,
                                  frames_per_buffer=CHUNK)
-        print("recording")
+        logger.debug("recording")
         frames = []
         self.connection_server()
         while True:
@@ -94,7 +96,8 @@ class Recognition:
                 # print(f'type={event_type}, alternatives={alternatives}')
 
         except grpc._channel._Rendezvous as err:
-            print(f'Error code {err._state.code}, message: {err._state.details}')
+            # print(f'Error code {err._state.code}, message: {err._state.details}')
+            logger.error(err)
             raise err
 
 

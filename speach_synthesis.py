@@ -22,6 +22,7 @@ def pyaudio_play_audio_function(text,
     :param integer chunk_size: размер семпла воспроизведения,
         можно отрегулировать если появится потрескивание
     """
+
     try:
         session = Session.from_yandex_passport_oauth_token(setting.OAUTH_TOKEN, setting.CATALOG_ID)
         synthesize_audio = SpeechSynthesis(session)

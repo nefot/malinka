@@ -1,6 +1,5 @@
 import requests
 
-import helper
 import setting
 from recognition import Recognition
 from speach_synthesis import pyaudio_play_audio_function
