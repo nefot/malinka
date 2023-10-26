@@ -1,6 +1,6 @@
 import requests
-
 import setting
+from bd_parser import find_answer
 from recognition import Recognition
 from speach_synthesis import SoundProcessor
 from setting import PORT, HOST
@@ -11,7 +11,7 @@ def listen_command(text):
 
 
 def send_text(text):
-    return ''
+    return text
 
 
 def sensor_active():
@@ -29,6 +29,7 @@ def get_text():
 
 
 if __name__ == '__main__':
+
     SP = SoundProcessor()
     while True:
         while sensor_active():
@@ -37,5 +38,4 @@ if __name__ == '__main__':
             send_text(text)
             # new_text = get_text()
             # pyaudio_play_audio_function(" . " + " .... " + new_text)
-            SP.process_and_play_audio(" . " + " .... " + text)
-
+            SP.process_and_play_audio(" . " + " .... " + find_answer(text, "horse_database.db"))

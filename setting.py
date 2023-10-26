@@ -9,11 +9,8 @@ API = "AQVNyUzOGjKeZLACdq8b96ibAT1WnAUPcRpx5jbX"
 
 # Настройки потокового распознавания.
 FORMAT = pyaudio.paInt16
-CHANNELS = 1
 RATE = 8000
 CHUNK = 4
-RECORD_SECONDS = 30
-WAVE_OUTPUT_FILENAME = "audio.wav"
 
 # pyaudio_play_audio_function
 SAMPLE_RATE = 16000  # частота дискретизации должна совпадать при синтезе и воспроизведении

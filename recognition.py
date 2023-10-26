@@ -5,10 +5,7 @@ import grpc
 import yandex.cloud.ai.stt.v3.stt_pb2 as stt_pb2
 import yandex.cloud.ai.stt.v3.stt_service_pb2_grpc as stt_service_pb2_grpc
 
-
-from loger import setup_logging
-
-logger = setup_logging()
+from loger import logger
 
 
 class Recognition:
@@ -66,7 +63,7 @@ class Recognition:
 
     def gen(self):
         yield stt_pb2.StreamingRequest(session_options=self.recognize_option())
-        stream = self.audio.open(format=FORMAT, channels=CHANNELS,
+        stream = self.audio.open(format=FORMAT, channels=1,
                                  rate=RATE, input=True,
                                  frames_per_buffer=CHUNK)
         logger.debug("recording")
