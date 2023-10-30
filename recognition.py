@@ -98,3 +98,6 @@ class Recognition:
 
 if __name__ == '__main__':
     test = Recognition(setting.API)
+    text = test.run()
+    logger.debug(text)
+    print(text)
