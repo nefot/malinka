@@ -58,9 +58,9 @@ class SoundProcessor:
 
     def visualize_audio(self, audio_signal):
         plt.plot(np.arange(0, len(audio_signal)), audio_signal)
-        plt.xlabel('Time')
-        plt.ylabel('Amplitude')
-        plt.title('Audio Signal')
+        plt.xlabel('Время')
+        plt.ylabel('миллисекунды')
+        plt.title('Аудио сигнал')
         plt.show()
 
     def harmonic_analysis_resynthesis(self, audio_data, num_harmonics=10):
@@ -81,10 +81,20 @@ class SoundProcessor:
 
 # Пример использования
 if __name__ == "__main__":
+
     sound_processor = SoundProcessor()
     if sound_processor.authenticate():
-        text = ("ИИИИИААААААА")
+        text = ("добрый день что пожелаете")
+        import time
+
+        start_time = time.time()  # время начала выполнения
+
         audio = sound_processor.process_and_play_audio(text)
+
+        end_time = time.time()  # время окончания выполнения
+        execution_time = end_time - start_time  # вычисляем время выполнения
+        print(f"Время выполнения программы: {execution_time} секунд")
+
         audio = np.frombuffer(audio, dtype=np.int16)
         shifted_audio_data = sound_processor.harmonic_analysis_resynthesis(audio, 55)
 

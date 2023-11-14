@@ -5,7 +5,7 @@ import yandex.cloud.ai.stt.v3.stt_service_pb2_grpc as stt_service_pb2_grpc
 OAUTH_TOKEN = "y0_AgAAAABHGDDBAATuwQAAAADusd1bSZvBsJ9eSH2pDw_6yBERArU45a4"
 CATALOG_ID = "b1gluhl8h1ulmb8852j6"
 ID_KEY = "aje99j71kckucio04tlf"
-API = "AQVNyUzOGjKeZLACdq8b96ibAT1WnAUPcRpx5jbX"
+API = "AQVN28kNiTnroB63hIH6cjfOzC0WMOzebEzH6p_A"
 
 # Настройки потокового распознавания.
 FORMAT = pyaudio.paInt16

@@ -28,5 +28,7 @@ def setup_logging():
     # Добавляем обработчик к логгеру
     logger.addHandler(file_handler)
 
+    logger.propagate = False
+
     return logger
 logger = setup_logging()
