@@ -4,7 +4,6 @@ import pyaudio
 import grpc
 import yandex.cloud.ai.stt.v3.stt_pb2 as stt_pb2
 import yandex.cloud.ai.stt.v3.stt_service_pb2_grpc as stt_service_pb2_grpc
-
 from loger import logger
 
 
@@ -97,20 +96,7 @@ class Recognition:
 
 
 if __name__ == '__main__':
-
-    import time
-
-    start_time = time.time()  # время начала выполнения
-
     test = Recognition(setting.API)
     text = test.run()
-
-    end_time = time.time()  # время окончания выполнения
-    execution_time = end_time - start_time  # вычисляем время выполнения
-    print(f"Время выполнения программы: {execution_time} секунд")
-
-    print(text)
-
-
     logger.debug(text)
 

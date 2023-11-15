@@ -1,7 +1,4 @@
 import pyaudio
-import yandex.cloud.ai.stt.v3.stt_pb2 as stt_pb2
-import yandex.cloud.ai.stt.v3.stt_service_pb2_grpc as stt_service_pb2_grpc
-
 OAUTH_TOKEN = "y0_AgAAAABHGDDBAATuwQAAAADusd1bSZvBsJ9eSH2pDw_6yBERArU45a4"
 CATALOG_ID = "b1gluhl8h1ulmb8852j6"
 ID_KEY = "aje99j71kckucio04tlf"
@@ -32,7 +29,3 @@ SPEAK_SETTING = {
 # Настройки сети
 PORT = "5000"
 HOST = "127.0.0.1"
-
-# Телеграмм бот
-BOT_TOKEN = '6603728925:AAEUyY9-cbtVh9grWCB6pXBDLoYVc5auoYk'
-MY_ID = 1407136430
