@@ -1,31 +1,25 @@
-import pyaudio
-OAUTH_TOKEN = "y0_AgAAAABHGDDBAATuwQAAAADusd1bSZvBsJ9eSH2pDw_6yBERArU45a4"
-CATALOG_ID = "b1gluhl8h1ulmb8852j6"
-ID_KEY = "aje99j71kckucio04tlf"
-API = "AQVN28kNiTnroB63hIH6cjfOzC0WMOzebEzH6p_A"
+import toml
 
-# Настройки потокового распознавания.
-FORMAT = pyaudio.paInt16
-RATE = 8000
-CHUNK = 4
 
-# pyaudio_play_audio_function
-SAMPLE_RATE = 16000  # частота дискретизации должна совпадать при синтезе и воспроизведении
-CHUNK_SIZE = 400
-NUM_CHANNELS = 1
+def load_config(file_path):
+    with open(file_path, "r") as config_file:
+        config = toml.load(config_file)
+    return config["general"]
 
-# Настройки голоса
-INVALID_ELEMENTS = (' ', '')  # Строки, которые игнорируются синтезатором
-SPEAK_SETTING = {
 
-    'lang': 'ru-RU',
-    'voice': 'ermil',  # oksana
-    'emotion': 'good',
-    'speed': '1.1',
-    'format': 'lpcm',
-    'sampleRateHertz': SAMPLE_RATE,
-}
+def get_config_value(config_data, key):
+    return config_data.get(key, None)
 
-# Настройки сети
-PORT = "5000"
-HOST = "127.0.0.1"
+
+config_data = load_config("config.toml")
+
+config_params = [
+    "OAUTH_TOKEN", "CATALOG_ID", "ID_KEY", "API", "RATE",
+    "CHUNK", "SAMPLE_RATE", "CHUNK_SIZE", "INVALID_ELEMENTS",
+    "VOICE", "EMOTION", "SPEED", "MAX_PAUSE_BETWEEN_WORDS_HINT_MS",
+    "TYPE", "PORT", "HOST"
+]
+
+OAUTH_TOKEN, CATALOG_ID, ID_KEY, API, RATE, CHUNK, SAMPLE_RATE, CHUNK_SIZE, \
+    INVALID_ELEMENTS, VOICE, EMOTION, SPEED, MAX_PAUSE_BETWEEN_WORDS_HINT_MS, \
+    TYPE, PORT, HOST = [get_config_value(config_data, param) for param in config_params]

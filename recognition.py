@@ -6,6 +6,14 @@ import yandex.cloud.ai.stt.v3.stt_pb2 as stt_pb2
 import yandex.cloud.ai.stt.v3.stt_service_pb2_grpc as stt_service_pb2_grpc
 from loger import logger
 
+FORMAT = pyaudio.paInt16
+CHANNELS = 1
+RATE = 8000
+CHUNK = 4096
+RECORD_SECONDS = 30
+WAVE_OUTPUT_FILENAME = "audio.wav"
+
+audio = pyaudio.PyAudio()
 
 class Recognition:
     @classmethod
@@ -98,5 +106,6 @@ class Recognition:
 if __name__ == '__main__':
     test = Recognition(setting.API)
     text = test.run()
+    print(text)
     logger.debug(text)
 

@@ -7,11 +7,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from loger import logger
-from setting import (
-    OAUTH_TOKEN, CATALOG_ID,
-    NUM_CHANNELS, SAMPLE_RATE, CHUNK_SIZE,
-    INVALID_ELEMENTS, SPEAK_SETTING, CHUNK
-)
+from setting import *
+
+SPEAK_SETTING = {
+
+    'lang': 'ru-RU',
+    'voice': VOICE,  # oksana
+    'emotion': EMOTION,
+    'speed': SPEED,
+    'format': 'lpcm',
+    'sampleRateHertz': SAMPLE_RATE,
+}
 
 
 class SoundProcessor:
@@ -40,7 +46,7 @@ class SoundProcessor:
         p = pyaudio.PyAudio()
         stream = p.open(
             format=pyaudio.paInt16,
-            channels=NUM_CHANNELS,
+            channels=1,
             rate=SAMPLE_RATE,
             output=True,
             frames_per_buffer=CHUNK_SIZE
@@ -85,20 +91,9 @@ if __name__ == "__main__":
     sound_processor = SoundProcessor()
     if sound_processor.authenticate():
         text = ("добрый день что пожелаете")
-        import time
-
-        start_time = time.time()  # время начала выполнения
-
         audio = sound_processor.process_and_play_audio(text)
-
-        end_time = time.time()  # время окончания выполнения
-        execution_time = end_time - start_time  # вычисляем время выполнения
-        print(f"Время выполнения программы: {execution_time} секунд")
-
         audio = np.frombuffer(audio, dtype=np.int16)
         shifted_audio_data = sound_processor.harmonic_analysis_resynthesis(audio, 55)
-
-        # Создаем пример аудио сигнала для визуализации (заглушка)
         audio_signal = np.sin(2 * np.pi * np.linspace(0, 1, SAMPLE_RATE))
         print(type(audio_signal))
         sound_processor.visualize_audio(audio)
