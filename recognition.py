@@ -15,6 +15,7 @@ WAVE_OUTPUT_FILENAME = "audio.wav"
 
 audio = pyaudio.PyAudio()
 
+
 class Recognition:
     @classmethod
     def validate(cls, api):
@@ -108,4 +109,3 @@ if __name__ == '__main__':
     text = test.run()
     print(text)
     logger.debug(text)
-
