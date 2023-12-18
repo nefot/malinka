@@ -1,10 +1,14 @@
-import setting
-from setting import *
-import pyaudio
 import grpc
+import pyaudio
+
+import setting
 import yandex.cloud.ai.stt.v3.stt_pb2 as stt_pb2
 import yandex.cloud.ai.stt.v3.stt_service_pb2_grpc as stt_service_pb2_grpc
-from loger import logger
+from loger import get_logger
+from setting import *
+from service import benchmark
+
+logger = get_logger('main')
 
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
@@ -82,6 +86,7 @@ class Recognition:
             yield stt_pb2.StreamingRequest(chunk=stt_pb2.AudioChunk(data=data))
             frames.append(data)
 
+    @benchmark
     def run(self):
         stub = self.connection_server()
         it = stub.RecognizeStreaming(self.gen(), metadata=(

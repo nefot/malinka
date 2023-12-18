@@ -1,14 +1,16 @@
-import requests.exceptions
-import pyaudio
-from pydub import AudioSegment
-from speechkit import Session, SpeechSynthesis
-
-import numpy as np
 import matplotlib.pyplot as plt
-from scipy.io.wavfile import write
+import numpy as np
+import pyaudio
+import requests.exceptions
 
-from loger import logger
+from scipy.io.wavfile import write
+from speechkit import Session, SpeechSynthesis
+from loger import get_logger
+
+logger = get_logger(__name__)
+
 from setting import *
+from service import benchmark
 
 SPEAK_SETTING = {
 
@@ -27,6 +29,7 @@ class SoundProcessor:
         self.logger = logger
         self.authenticate()
 
+    @benchmark
     def authenticate(self):
         try:
             self.logger.debug("Аутентификация")
@@ -37,11 +40,16 @@ class SoundProcessor:
             return False
         return True
 
+    @benchmark
+    def process(self, text):
+        return self.synthesize_audio.synthesize_stream(**SPEAK_SETTING, text=text)
+
+
     def process_and_play_audio(self, text):
         if text in INVALID_ELEMENTS:
             return
 
-        audio_data = self.synthesize_audio.synthesize_stream(**SPEAK_SETTING, text=text)
+        audio_data = self.process(text)
 
         self.logger.debug(f"Озвучил: {text}")
 
@@ -86,6 +94,8 @@ class SoundProcessor:
 
         return np.real(resynthesized_audio)
 
+
+@benchmark
 def save_audio_to_file(audio_data):
     filename = f'ausios.wav'
     waveform_integers = np.int16(audio_data)
@@ -97,12 +107,13 @@ if __name__ == "__main__":
 
     sound_processor = SoundProcessor()
     if sound_processor.authenticate():
-        text = ("...э <[huge]> привет я ваш голосовой помощник")
+        SPEED = "1.0"
+        text = ("Ростов-город, Ростов-Дон!")
         audio = sound_processor.process_and_play_audio(text)
         audio = np.frombuffer(audio, dtype=np.int16)
-        # shifted_audio_data = sound_processor.harmonic_analysis_resynthesis(audio, 55)
-        # audio_signal = np.sin(2 * np.pi * np.linspace(0, 1, SAMPLE_RATE))
-        # print(type(audio_signal))
-        # sound_processor.visualize_audio(audio)
-        # sound_processor.visualize_audio(shifted_audio_data)
+        shifted_audio_data = sound_processor.harmonic_analysis_resynthesis(audio, 55)
+        audio_signal = np.sin(2 * np.pi * np.linspace(0, 1, SAMPLE_RATE))
+        print(type(audio_signal))
+        sound_processor.visualize_audio(audio)
+        sound_processor.visualize_audio(shifted_audio_data)
         save_audio_to_file(audio)

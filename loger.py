@@ -1,20 +1,29 @@
+import json
 import logging
+import logging.config
 import os
 
+FOLDER_LOG = "log"
+LOGGING_CONFIG_FILE = 'loggers.json'
 
-def setup_logging():
-    log_directory = 'log'
-    os.makedirs(log_directory, exist_ok=True)
-    log_filename = 'app.log'
-    log_path = os.path.join(log_directory, log_filename)
-    logging.basicConfig(level=logging.DEBUG)
-    logger = logging.getLogger(__name__)
-    file_handler = logging.FileHandler(log_path, encoding='utf-8')
-    file_handler.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    file_handler.setFormatter(formatter)
-    logger.addHandler(file_handler)
-    logger.propagate = False
-    return logger
 
-logger = setup_logging()
+def create_log_folder(folder=FOLDER_LOG):
+    if not os.path.exists(folder):
+        os.mkdir(folder)
+
+
+def get_logger(name, template='default'):
+    create_log_folder()
+    with open(LOGGING_CONFIG_FILE, "r", encoding='utf-8') as f:
+        dict_config = json.load(f)
+        dict_config["loggers"][name] = dict_config["loggers"][template]
+    logging.config.dictConfig(dict_config)
+    return logging.getLogger(name)
+
+
+def get_default_logger():
+    create_log_folder()
+    with open(LOGGING_CONFIG_FILE, "r", encoding='utf-8') as f:
+        logging.config.dictConfig(json.load(f))
+
+    return logging.getLogger("default")
