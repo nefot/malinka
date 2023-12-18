@@ -1,10 +1,12 @@
 import os
 import sqlite3
+
 from loger import get_logger
 
 logger = get_logger(__name__)
 import pandas as pd
 
+a
 def bd_create():
     """
     Создает базу данных с Excel файла
