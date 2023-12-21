@@ -5,6 +5,7 @@ import setting
 import yandex.cloud.ai.stt.v3.stt_pb2 as stt_pb2
 import yandex.cloud.ai.stt.v3.stt_service_pb2_grpc as stt_service_pb2_grpc
 from loger import get_logger
+from renoise import reNoise
 from setting import *
 from service import benchmark
 
@@ -78,6 +79,7 @@ class Recognition:
         stream = self.audio.open(format=FORMAT, channels=1,
                                  rate=RATE, input=True,
                                  frames_per_buffer=CHUNK)
+        stream = reNoise(stream)
         logger.debug("recording")
         frames = []
         self.connection_server()
