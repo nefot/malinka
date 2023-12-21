@@ -79,12 +79,12 @@ class Recognition:
         stream = self.audio.open(format=FORMAT, channels=1,
                                  rate=RATE, input=True,
                                  frames_per_buffer=CHUNK)
-        stream = reNoise(stream)
+
         logger.debug("recording")
         frames = []
         self.connection_server()
         while True:
-            data = stream.read(CHUNK)
+            data = reNoise( stream.read(CHUNK))
             yield stt_pb2.StreamingRequest(chunk=stt_pb2.AudioChunk(data=data))
             frames.append(data)
 
