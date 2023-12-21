@@ -1,11 +1,15 @@
 import grpc
 import pyaudio
+from rnnoise_wrapper import RNNoise
+from setting import SAMPLE_RATE
+
+denoiser = RNNoise(f_name_lib='librnnoise_default.so.0.4.1')
 
 import setting
 import yandex.cloud.ai.stt.v3.stt_pb2 as stt_pb2
 import yandex.cloud.ai.stt.v3.stt_service_pb2_grpc as stt_service_pb2_grpc
 from loger import get_logger
-from renoise import reNoise
+# from renoise import reNoise
 from setting import *
 from service import benchmark
 
@@ -84,7 +88,9 @@ class Recognition:
         frames = []
         self.connection_server()
         while True:
-            data = reNoise( stream.read(CHUNK))
+
+
+            data = denoiser.filter(stream.read(CHUNK), sample_rate=SAMPLE_RATE)
             print(data)
             print(type(data))
             print(type(stream.read(CHUNK)))
