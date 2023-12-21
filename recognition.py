@@ -85,6 +85,9 @@ class Recognition:
         self.connection_server()
         while True:
             data = reNoise( stream.read(CHUNK))
+            print(data)
+            print(type(data))
+            print(type(stream.read(CHUNK)))
             yield stt_pb2.StreamingRequest(chunk=stt_pb2.AudioChunk(data=data))
             frames.append(data)
 
