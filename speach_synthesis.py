@@ -2,9 +2,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pyaudio
 import requests.exceptions
-
 from scipy.io.wavfile import write
 from speechkit import Session, SpeechSynthesis
+
 from loger import get_logger
 
 logger = get_logger(__name__)
@@ -108,12 +108,12 @@ if __name__ == "__main__":
     sound_processor = SoundProcessor()
     if sound_processor.authenticate():
         SPEED = "1.0"
-        text = ("Ростов-город, Ростов-Дон!")
+        text = ('пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>')
         audio = sound_processor.process_and_play_audio(text)
         audio = np.frombuffer(audio, dtype=np.int16)
-        shifted_audio_data = sound_processor.harmonic_analysis_resynthesis(audio, 55)
-        audio_signal = np.sin(2 * np.pi * np.linspace(0, 1, SAMPLE_RATE))
-        print(type(audio_signal))
-        sound_processor.visualize_audio(audio)
-        sound_processor.visualize_audio(shifted_audio_data)
-        save_audio_to_file(audio)
+        # shifted_audio_data = sound_processor.harmonic_analysis_resynthesis(audio, 55)
+        # audio_signal = np.sin(2 * np.pi * np.linspace(0, 1, SAMPLE_RATE))
+        # print(type(audio_signal))
+        # sound_processor.visualize_audio(audio)
+        # sound_processor.visualize_audio(shifted_audio_data)
+        # save_audio_to_file(audio)

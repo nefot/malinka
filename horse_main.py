@@ -15,12 +15,8 @@ def sensor_active():
 
 
 def get_text():
-    """
-    Этот метод вытаскивает данные из json файла
-    :param text: json файл
-    :return: текст
-    """
-    res = requests.get(f"http://{HOST}:{PORT}/donetext")
+
+    res = requests.get(f"http://{HOST}:{PORT}/invoke")
     return res,
 
 
