@@ -14,6 +14,7 @@ def sensor_active():
 def get_text(response):
 
     resp = requests.post(f"http://{HOST}:{PORT}/invoke", data=response)
+    print(resp)
     return resp.json()['response']
 
 
