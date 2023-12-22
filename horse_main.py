@@ -41,6 +41,7 @@ if __name__ == '__main__':
                 continue
 
             if text is not None:
+                print('[text], ', text)
                 response = get_text(text)
                 print('[response], ', response)
                 print("\033[32 {}" .format(response))
