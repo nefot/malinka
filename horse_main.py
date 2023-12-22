@@ -14,19 +14,10 @@ def get_text(response):
 
     res = requests.get(f"http://{HOST}:{PORT}/invoke")
 
-    # importing the requests library
-
-
-    # api-endpoint
     URL = f"http://{HOST}:{PORT}/invoke"
 
-    # location given here
-    location = "delhi technological university"
-
-    # defining a params dict for the parameters to be sent to the API
     PARAMS = {'query': response}
 
-    # sending get request and saving the response as response object
     r = requests.get(url=URL, params=PARAMS)
 
 
@@ -51,6 +42,7 @@ if __name__ == '__main__':
 
             if text is not None:
                 response = get_text(text)
+                print('[response], ', response)
                 print("\033[32 {}" .format(response))
 
                 print(response)
