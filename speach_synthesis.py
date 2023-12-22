@@ -5,12 +5,10 @@ import requests.exceptions
 from scipy.io.wavfile import write
 from speechkit import Session, SpeechSynthesis
 
-from loger import get_logger
 
-logger = get_logger(__name__)
 
 from setting import *
-from service import benchmark
+from service import benchmark, Charisma
 
 SPEAK_SETTING = {
 
@@ -19,25 +17,25 @@ SPEAK_SETTING = {
     'emotion': EMOTION,
     'speed': SPEED,
     'format': 'lpcm',
-    'sampleRateHertz': SAMPLE_RATE,
+    'sampleRateHertz': 16000,
 }
 
 
 class SoundProcessor:
     def __init__(self):
         self.synthesize_audio = None
-        self.logger = logger
+
         self.authenticate()
 
     @benchmark
     def authenticate(self):
         try:
-            self.logger.debug("Аутентификация")
+
             session = Session.from_yandex_passport_oauth_token(OAUTH_TOKEN, CATALOG_ID)
             self.synthesize_audio = SpeechSynthesis(session)
         except requests.exceptions.ConnectionError:
-            self.logger.debug("Нестабильное подключение")
-            return False
+            text = 'authenticate error'
+            print("\033[31m {}".format(text))
         return True
 
     @benchmark
@@ -51,18 +49,23 @@ class SoundProcessor:
 
         audio_data = self.process(text)
 
-        self.logger.debug(f"Озвучил: {text}")
+        # self.logger.debug(f"Озвучил: {text}")
 
         p = pyaudio.PyAudio()
         stream = p.open(
             format=pyaudio.paInt16,
             channels=1,
-            rate=SAMPLE_RATE,
+            rate= 16000,
             output=True,
             frames_per_buffer=CHUNK_SIZE
         )
 
         try:
+
+
+
+            charisma = Charisma(audio_data)
+            audio_data = charisma.add_neighing()
             for i in range(0, len(audio_data), CHUNK_SIZE):
                 stream.write(audio_data[i:i + CHUNK_SIZE])
 
@@ -108,7 +111,7 @@ if __name__ == "__main__":
     sound_processor = SoundProcessor()
     if sound_processor.authenticate():
         SPEED = "1.0"
-        text = ('пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>пашол нахуй <[100]> пошел нахуй <[100]> пошел нахуй <[100]> пидарас <[100]>')
+        text = ('+и-и-и-и-[[g]] о-  [[u g]] о ')
         audio = sound_processor.process_and_play_audio(text)
         audio = np.frombuffer(audio, dtype=np.int16)
         # shifted_audio_data = sound_processor.harmonic_analysis_resynthesis(audio, 55)

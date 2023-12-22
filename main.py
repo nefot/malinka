@@ -1,16 +1,13 @@
 import random
 import sqlite3
 
-
 import spacy
 
 from nltk import ngrams
 
 from service import benchmark
-from loger import get_logger
 
 nlp = spacy.load("ru_core_news_sm")
-logger = get_logger(__name__)
 
 
 
@@ -21,11 +18,14 @@ def ngram_similarity(str1, str2, n=3):
     similarity = len(intersection) / float(len(ngrams_str1.union(ngrams_str2)))
     return similarity * 100
 
-def compare_russian_strings(str1, str2):
-    similarity_percentage = ngram_similarity(str1, str2)
-    # print(f"Степень схожести строк: {similarity_percentage:.2f}%")
-    return similarity_percentage
 
+def compare_russian_strings(str1, str2):
+    try:
+        similarity_percentage = ngram_similarity(str1, str2)
+        # print(f"Степень схожести строк: {similarity_percentage:.2f}%")
+        return similarity_percentage
+    except ZeroDivisionError:
+        return 0
 
 
 def levenshtein(str_1, str_2):

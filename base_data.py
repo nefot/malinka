@@ -1,12 +1,10 @@
 import os
 import sqlite3
 
-from loger import get_logger
 
-logger = get_logger(__name__)
 import pandas as pd
 
-a
+
 def bd_create():
     """
     Создает базу данных с Excel файла
@@ -36,7 +34,7 @@ def bd_create():
 def delete_bd():
     if os.path.exists('horse_database.db'):
         os.remove('horse_database.db')
-        logger.debug("База данных удалена.")
+        print("База данных удалена.")
     else:
-        logger.debug("База данных не существует.")
+        print("База данных не существует.")
 

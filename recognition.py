@@ -1,19 +1,19 @@
 import grpc
 import pyaudio
+
 from rnnoise_wrapper import RNNoise
-from setting import SAMPLE_RATE
 
 denoiser = RNNoise(f_name_lib='librnnoise_default.so.0.4.1')
 
 import setting
 import yandex.cloud.ai.stt.v3.stt_pb2 as stt_pb2
 import yandex.cloud.ai.stt.v3.stt_service_pb2_grpc as stt_service_pb2_grpc
-from loger import get_logger
+
 # from renoise import reNoise
 from setting import *
 from service import benchmark
 
-logger = get_logger('main')
+
 
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
@@ -72,7 +72,7 @@ class Recognition:
 
     @staticmethod
     def connection_server():
-        logger.debug('connection_server')
+
         cred = grpc.ssl_channel_credentials()
         channel = grpc.secure_channel('stt.api.cloud.yandex.net:443', cred)
         stub = stt_service_pb2_grpc.RecognizerStub(channel)
@@ -84,16 +84,11 @@ class Recognition:
                                  rate=RATE, input=True,
                                  frames_per_buffer=CHUNK)
 
-        logger.debug("recording")
+
         frames = []
         self.connection_server()
         while True:
-
-
             data = denoiser.filter(stream.read(CHUNK), sample_rate=SAMPLE_RATE)
-            print(data)
-            print(type(data))
-            print(type(stream.read(CHUNK)))
             yield stt_pb2.StreamingRequest(chunk=stt_pb2.AudioChunk(data=data))
             frames.append(data)
 
@@ -116,12 +111,11 @@ class Recognition:
 
 
         except grpc._channel._Rendezvous as err:
-            logger.error(err)
             raise err
 
 
 if __name__ == '__main__':
     test = Recognition(setting.API)
     text = test.run()
-    print(text)
-    logger.debug(text)
+    print("\033[34m {}" .format(text))
+

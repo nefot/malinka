@@ -1,26 +1,12 @@
 import os
 import sqlite3
 
-import openpyxl
+import numpy as np
+import wave
 import pandas as pd
 
-from loger import get_logger
 
-logger = get_logger(__name__)
-#
-# def process_excel_file():
-#     input_excel_file = 'bd.xlsx'
-#     workbook = openpyxl.load_workbook(input_excel_file)
-#     worksheet = workbook.active
-#     max_row = worksheet.max_row
-#     for row in range(1, max_row + 1):
-#         cell = worksheet.cell(row=row, column=4)
-#         if cell.value:
-#             cell.value = " ".join(word_shortener(str(cell.value)))
-#
-#     # Сохраните изменения в новом файле
-#     output_excel_file = 'bd.xlsx'
-#     workbook.save(output_excel_file)
+from setting import CHUNK_SIZE
 
 
 
@@ -48,22 +34,18 @@ def bd_create():
     df.to_sql('my_table', conn, if_exists='replace', index=False)
     conn.commit()
     conn.close()
-    logger.debug('БАЗА ДАНЫХ СОЗДАННА')
 
 
 def delete_bd():
     if os.path.exists('horse_database.db'):
         os.remove('horse_database.db')
-        logger.debug("База данных удалена.")
     else:
-        logger.debug("База данных не существует.")
-
+        pass
 
 
 def remove_empty_elements(input_list):
     processed_list = [element for element in input_list if element.strip() != '']
     return processed_list
-
 
 
 def benchmark(func):
@@ -72,8 +54,34 @@ def benchmark(func):
         start = time.time()
         return_value = func(*args, **kwargs)
         end = time.time()
-        print(f'[{func.__name__}] Время выполнения: {end - start} секунд.')
+        out_yellow(f'[{func.__name__}] Время выполнения: {end - start} секунд.')
         return return_value
 
     return wrapper
 
+def out_red(text):
+    print("\033[31m {}" .format(text))
+def out_yellow(text):
+    print("\033[33m {}" .format(text))
+def out_blue(text):
+    print("\033[34m {}" .format(text))
+
+
+
+class Charisma:
+    def __init__(self, audio: bytes):
+        self.audio = audio
+
+    def merge_wav_and_bytes(self, wav_file_path, bytes_data):
+        # Чтение данных из WAV-файла
+        with wave.open(wav_file_path, 'rb') as wf:
+            wav_data = np.frombuffer(wf.readframes(wf.getnframes()), dtype=np.int16)
+        wav_bytes = wav_data.tobytes()
+
+        # Объединение данных
+        merged_bytes = bytes_data + wav_bytes
+
+        return merged_bytes
+
+    def add_neighing(self):
+        return self.merge_wav_and_bytes(wav_file_path="frrrrrrr3.wav", bytes_data=self.audio)

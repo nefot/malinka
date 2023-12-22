@@ -5,26 +5,39 @@ from service import *
 from recognition import Recognition
 from speach_synthesis import SoundProcessor
 from setting import PORT, HOST
-from loger import get_logger
-import time
-logger = get_logger(__name__)
-
 
 def sensor_active():
     return True
 
 
-def get_text():
+def get_text(response):
 
     res = requests.get(f"http://{HOST}:{PORT}/invoke")
-    return res,
+
+    # importing the requests library
+
+
+    # api-endpoint
+    URL = f"http://{HOST}:{PORT}/invoke"
+
+    # location given here
+    location = "delhi technological university"
+
+    # defining a params dict for the parameters to be sent to the API
+    PARAMS = {'query': response}
+
+    # sending get request and saving the response as response object
+    r = requests.get(url=URL, params=PARAMS)
+
+
 
 
 if __name__ == '__main__':
-    logger.debug('\n___________________________________________________________\n')
+    print('\n___________________________________________________________\n')
     SP = SoundProcessor()
     delete_bd()
     bd_create()
+
 
     while True:
         while sensor_active():
@@ -32,14 +45,14 @@ if __name__ == '__main__':
 
             try:
                 text = test.run()[0]
-                logger.debug("ПОЛЬЗОВАТЕЛЬ: ", text)
+                print("ПОЛЬЗОВАТЕЛЬ: ", text)
             except TypeError:
                 continue
 
             if text is not None:
-                text = run(text)
-                logger.debug("КОНЬ: ", text)
+                response = get_text(text)
+                print("\033[32 {}" .format(response))
 
-                print(text)
+                print(response)
                 if text:
-                    SP.process_and_play_audio(" . " + " .... " + text)
+                    SP.process_and_play_audio(" . " + " .... " + response)
