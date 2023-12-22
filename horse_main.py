@@ -11,9 +11,9 @@ def sensor_active():
     return True
 
 
-def get_text(response):
+def get_text(query):
 
-    resp = requests.post(f"http://{HOST}:{PORT}/invoke", data=response)
+    resp = requests.post(f"http://{HOST}:{PORT}/invoke", data=json.dumps({"query": query}))
     print(resp)
     return resp.json()['response']
 
