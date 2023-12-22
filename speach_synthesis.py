@@ -8,7 +8,7 @@ from speechkit import Session, SpeechSynthesis
 
 
 from setting import *
-from service import benchmark, Charisma
+from service import benchmark
 
 SPEAK_SETTING = {
 
@@ -64,8 +64,8 @@ class SoundProcessor:
 
 
 
-            charisma = Charisma(audio_data)
-            audio_data = charisma.add_neighing()
+            # charisma = Charisma(audio_data)
+            # audio_data = charisma.add_neighing()
             for i in range(0, len(audio_data), CHUNK_SIZE):
                 stream.write(audio_data[i:i + CHUNK_SIZE])
 
