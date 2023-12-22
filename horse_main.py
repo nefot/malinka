@@ -12,11 +12,9 @@ def sensor_active():
 
 def get_text(response):
 
-    res = requests.post(f"http://{HOST}:{PORT}/invoke")
+    resp = requests.post(f"http://{HOST}:{PORT}/invoke", data=response)
 
-    URL = f"http://{HOST}:{PORT}/invoke"
-
-    PARAMS = {'query': response}
+    return response
 
 
 
