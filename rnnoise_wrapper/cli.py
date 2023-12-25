@@ -1,15 +1,3 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#       OS : GNU/Linux Ubuntu 16.04 or later
-# LANGUAGE : Python 3.5.2 or later
-#   AUTHOR : Klim V. O.
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-'''
-Simple CLI for rnnoise_wrapper.RNNoise().
-'''
-
 import os
 import sys
 import time
