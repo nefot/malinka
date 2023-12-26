@@ -9,8 +9,8 @@ cloud-id = "b1gtqcdar7st9r9i6hhd"
 folder-id =  "b1gluhl8h1ulmb8852j6"
 
 
-RATE = "8000"
-CHUNK = "4"
+RATE = 8000
+CHUNK = 1000
 SAMPLE_RATE = 16000
 CHUNK_SIZE = 400
 INVALID_ELEMENTS = [" ", "", ]

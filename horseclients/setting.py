@@ -23,3 +23,5 @@ config_params = [
 OAUTH_TOKEN, CATALOG_ID, ID_KEY, API, RATE, CHUNK, SAMPLE_RATE, CHUNK_SIZE, \
     INVALID_ELEMENTS, VOICE, EMOTION, SPEED, MAX_PAUSE_BETWEEN_WORDS_HINT_MS, \
     TYPE, PORT, HOST = [get_config_value(config_data, param) for param in config_params]
+
+del config_data, config_params
