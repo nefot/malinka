@@ -26,6 +26,7 @@ def startup(name) -> print:
 if __name__ == '__main__':
     SD = SpeachGeneration(YANDEX_API_KEY)
     REC = Recognition(YANDEX_API_KEY)
+    n = SD.synthesize('Привет, меня зовут конь Ти дон')
     startup('HORSE CLIENT')
     while True:
         text = REC.run()[0]
