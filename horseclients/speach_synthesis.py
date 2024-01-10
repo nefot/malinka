@@ -1,12 +1,15 @@
 import io
+
 import grpc
 import pyaudio
+
 import yandex.cloud.ai.tts.v3.tts_pb2 as tts_pb2
 import yandex.cloud.ai.tts.v3.tts_service_pb2_grpc as tts_service_pb2_grpc
+from horseclients.setting import YANDEX_API_KEY
 
 
 class SpeachGeneration:
-    def __init__(self, api):
+    def __init__(self, api: str):
         self.api = api
         self.stub = tts_service_pb2_grpc.SynthesizerStub(
             grpc.secure_channel('tts.api.cloud.yandex.net:443', grpc.ssl_channel_credentials()))
@@ -37,9 +40,14 @@ class SpeachGeneration:
             output_audio_spec=tts_pb2.AudioFormatOptions(
                 container_audio=tts_pb2.ContainerAudio(
                     container_audio_type=tts_pb2.ContainerAudio.WAV
+                ),
+                raw_audio = tts_pb2.RawAudio(
+                    sample_rate_hertz=16000
                 )
             ),
-            loudness_normalization_type=tts_pb2.UtteranceSynthesisRequest.LUFS
+            loudness_normalization_type=tts_pb2.UtteranceSynthesisRequest.LUFS,
+            hints=[tts_pb2.Hints(voice="zahar"), tts_pb2.Hints(speed=1.2), tts_pb2.Hints(pitch_shift=270)],
+
         )
 
         it = self.stub.UtteranceSynthesis(request, metadata=(('authorization', f'Api-Key {self.api}'),))
@@ -57,5 +65,6 @@ class SpeachGeneration:
 
 
 if __name__ == '__main__':
-    SP = SpeachGeneration('AQVNw1WMwVakD-T-4Tg0C14ljs3L71K5i3qRX_B2')
+    print(YANDEX_API_KEY)
+    SP = SpeachGeneration(YANDEX_API_KEY)
     print(SP.synthesize('привет API 3'))

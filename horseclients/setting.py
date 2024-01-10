@@ -1,3 +1,4 @@
+import os
 import toml
 
 
@@ -11,16 +12,18 @@ def get_config_value(config_data, key):
     return config_data.get(key, None)
 
 
+YANDEX_API_KEY = os.environ.get('YANDEX_API_KEY')
+YANDEX_FOLDER_ID = os.environ.get('YANDEX_FOLDER_ID')
+CONNECTION_STRING = os.environ.get('CONNECTION_STRING')
+
 config_data = load_config("../config.toml")
 
 config_params = [
-    "OAUTH_TOKEN", "CATALOG_ID", "ID_KEY", "API", "RATE",
-    "CHUNK", "SAMPLE_RATE", "CHUNK_SIZE", "INVALID_ELEMENTS",
+    "RATE", "CHUNK", "SAMPLE_RATE", "CHUNK_SIZE", "INVALID_ELEMENTS",
     "VOICE", "EMOTION", "SPEED", "MAX_PAUSE_BETWEEN_WORDS_HINT_MS",
     "TYPE", "PORT", "HOST"
 ]
-
-OAUTH_TOKEN, CATALOG_ID, ID_KEY, API, RATE, CHUNK, SAMPLE_RATE, CHUNK_SIZE, \
+RATE, CHUNK, SAMPLE_RATE, CHUNK_SIZE, \
     INVALID_ELEMENTS, VOICE, EMOTION, SPEED, MAX_PAUSE_BETWEEN_WORDS_HINT_MS, \
     TYPE, PORT, HOST = [get_config_value(config_data, param) for param in config_params]
 

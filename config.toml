@@ -1,14 +1,4 @@
 [general]
-
-OAUTH_TOKEN = "y0_AgAAAABHGDDBAATuwQAAAADusd1bSZvBsJ9eSH2pDw_6yBERArU45a4"
-CATALOG_ID = "b1gluhl8h1ulmb8852j6"
-ID_KEY = "aje3am6c2ll41vifto9o"
-API = "AQVNw1WMwVakD-T-4Tg0C14ljs3L71K5i3qRX_B2"
-token = "y0_AgAAAABHGDDBAATuwQAAAADusd1bSZvBsJ9eSH2pDw_6yBERArU45a4"
-cloud-id = "b1gtqcdar7st9r9i6hhd"
-folder-id =  "b1gluhl8h1ulmb8852j6"
-
-
 RATE = 8000
 CHUNK = 1000
 SAMPLE_RATE = 16000

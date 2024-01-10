@@ -3,20 +3,22 @@ import pyaudio
 import setting
 import yandex.cloud.ai.stt.v3.stt_pb2 as stt_pb2
 import yandex.cloud.ai.stt.v3.stt_service_pb2_grpc as stt_service_pb2_grpc
-from setting import *
+from horseclients.setting import YANDEX_API_KEY
 
 
 class Recognition:
-    FORMAT = pyaudio.paInt16
-    audio = pyaudio.PyAudio()
-    default_classifier_type = "HIGH"
+    @classmethod
+    def validate(cls, api):
+        return api
 
-    def __init__(self, api: str):
+    def __init__(self, api):
         self.audio = pyaudio.PyAudio()
         self.api = api
         self.recognize_options = self.recognize_option()
 
-    def recognize_option(self):
+    @staticmethod
+    def recognize_option():
+
         recognize_options = stt_pb2.StreamingOptions(
 
             recognition_model=stt_pb2.RecognitionModelOptions(
@@ -41,7 +43,7 @@ class Recognition:
             eou_classifier=stt_pb2.EouClassifierOptions(
                 default_classifier=stt_pb2.DefaultEouClassifier(
                     max_pause_between_words_hint_ms=500,
-                    type=self.default_classifier_type
+                    type="HIGH"
                 )
 
             )
@@ -50,39 +52,33 @@ class Recognition:
         return recognize_options
 
     @staticmethod
-    def connection_server() -> object:
+    def connection_server():
 
         cred = grpc.ssl_channel_credentials()
         channel = grpc.secure_channel('stt.api.cloud.yandex.net:443', cred)
         stub = stt_service_pb2_grpc.RecognizerStub(channel)
-        print('conected')
-        print(type(stub))
         return stub
 
     def gen(self):
         yield stt_pb2.StreamingRequest(session_options=self.recognize_option())
-        stream = self.audio.open(format=self.FORMAT, channels=1,
-                                 rate=RATE, input=True,
-                                 frames_per_buffer=CHUNK)
+        stream = self.audio.open(format=pyaudio.paInt16, channels=1,
+                                 rate=setting.RATE, input=True,
+                                 frames_per_buffer=setting.CHUNK)
 
 
         frames = []
         self.connection_server()
         while True:
-            data = stream.read(CHUNK)
+            data = stream.read(setting.CHUNK)
             yield stt_pb2.StreamingRequest(chunk=stt_pb2.AudioChunk(data=data))
             frames.append(data)
 
-    def conected(self):
-        stub = self.connection_server()
 
     def run(self):
-        self.conected()
         stub = self.connection_server()
         it = stub.RecognizeStreaming(self.gen(), metadata=(
             ('authorization', f'Api-Key {self.api}'),
         ))
-        print(it)
         try:
             for r in it:
                 event_type, alternatives = r.WhichOneof('Event'), None
@@ -96,10 +92,12 @@ class Recognition:
 
 
         except grpc._channel._Rendezvous as err:
-            raise err
+            pass
 
 
 if __name__ == '__main__':
-    test = Recognition(setting.API)
-    text = test.run()[0]
-    print("\033[34m {}".format(text))
+    test = Recognition(YANDEX_API_KEY)
+    while True:
+        text = test.run()[0]
+        print(text)
+        print("\033[34m {}".format(text))
