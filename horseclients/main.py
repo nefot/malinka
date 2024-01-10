@@ -3,22 +3,21 @@ import grpc
 import requests
 from grpc._channel import _MultiThreadedRendezvous
 
-from horseclients.setting import HOST, PORT, YANDEX_API_KEY
-from horseclients.speach_recognition import Recognition
+from setting import HOST, PORT, YANDEX_API_KEY
+from speach_recognition import Recognition
 from speach_synthesis import SpeachGeneration
 
 
 def get_text(query: str) -> dict | str:
     try:
         resp = requests.post(f"http://{HOST}:{PORT}/invoke", json={"query": query})
-        print(resp)
         return resp.json()['response']
     except requests.exceptions.ConnectTimeout:
         return 'Нет соединения с сервером'
 
 
 def startup(name) -> print:
-    len_line = 60
+    len_line = 100
     print('\n', '-' * int((len_line / 2) - int(len(name) / 2) - 1) + ' ' + name + ' ' + '-' * int(
         (len_line / 2) - int(len(name) / 2) - 1),
           '\n')
@@ -33,7 +32,7 @@ if __name__ == '__main__':
         if text is None: continue
         print('[Пользователь]', text)
         response = get_text(text)
-        print(response)
+        print('[Конь]', response)
         try:
             n = SD.synthesize(response)
         except grpc._channel._Rendezvous as e:
