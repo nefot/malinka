@@ -46,7 +46,8 @@ class SpeachGeneration:
                 )
             ),
             loudness_normalization_type=tts_pb2.UtteranceSynthesisRequest.LUFS,
-            hints=[tts_pb2.Hints(voice="zahar"), tts_pb2.Hints(speed=1.2), tts_pb2.Hints(pitch_shift=270)],
+            hints=[tts_pb2.Hints(voice="zahar"), tts_pb2.Hints(speed=0.9), tts_pb2.Hints(volume=0),
+                   tts_pb2.Hints(pitch_shift=270)],
 
         )
 

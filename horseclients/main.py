@@ -10,8 +10,8 @@ from speach_synthesis import SpeachGeneration
 
 def get_text(query: str) -> dict | str:
     try:
-        resp = requests.post(f"http://{HOST}:{PORT}/invoke", json={"query": query})
-        return resp.json()['response']
+        resp = requests.post(f"http://{HOST}:{PORT}/rag/invoke", json={"input": query})
+        return resp.json()['output']
     except requests.exceptions.ConnectTimeout:
         return 'Нет соединения с сервером'
 
@@ -35,9 +35,14 @@ if __name__ == '__main__':
         response = get_text(text)
         print('[Конь]', response)
         try:
+            s = []
             n = SD.synthesize(response)
         except grpc._channel._Rendezvous as e:
             if e._state.details.split(',')[0] == 'Too long text':
+                s = response.split(".")
+                for i in s:
+                    n = SD.synthesize(s[i])
+
                 print("Too long text", e._state.details)
             else:
                 print("Произошла ошибка gRPC:", e)

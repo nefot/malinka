@@ -1,9 +1,10 @@
 [general]
-RATE = 8000
-CHUNK = 1000
+API = "AQVN0rn-OB5ZvkfqYCmFNXZhRwuGrtGI-W5shkQ5"
+
+
+RATE = "8000"
+CHUNK = "4"
 SAMPLE_RATE = 16000
-CHUNK_SIZE = 400
-INVALID_ELEMENTS = [" ", "", ]
 VOICE = "zahar"
 EMOTION = "good"
 SPEED = "1.0"

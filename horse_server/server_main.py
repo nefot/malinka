@@ -1,23 +1,14 @@
-#!/usr/bin/env python3
-# Main
 import os
-
-# Flask
-from flask import Flask, abort, request, jsonify
-
-# YaGPT
-from langchain.chat_models.yandex import ChatYandexGPT
-
-# PGVector
-from langchain.document_loaders.csv_loader import CSVLoader
-from langchain.vectorstores.pgvector import PGVector
-from langchain.embeddings import HuggingFaceEmbeddings
-
-# Templates
 import random
+
+from flask import Flask, abort, request, jsonify
+from langchain.chat_models.yandex import ChatYandexGPT
+from langchain.document_loaders.csv_loader import CSVLoader
+from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.prompts.chat import ChatPromptTemplate
+from langchain.vectorstores.pgvector import PGVector
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnableLambda, RunnablePassthrough
+from langchain_core.runnables import RunnablePassthrough
 
 print("Loading variables from environment...")
 YANDEX_API_KEY = os.environ.get('YANDEX_API_KEY')
